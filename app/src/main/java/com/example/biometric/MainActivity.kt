@@ -45,10 +45,12 @@ class MainActivity : AppCompatActivity(), BiometricCallback {
         toast(errString.toString())
     }
 
+    //Authentication was successful
     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
         toast("Success")
     }
 
+    //Authentication failedgit
     override fun onAuthenticationFailed() {
         toast("Authentication Failed")
     }
