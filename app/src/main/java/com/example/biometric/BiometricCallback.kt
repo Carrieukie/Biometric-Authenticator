@@ -4,9 +4,9 @@ import androidx.biometric.BiometricPrompt
 
 interface BiometricCallback {
 
-    fun onAuthenticationError(errorCode: Int, errString: CharSequence)
+        fun onAuthenticationError(errorCode: Int, errString: CharSequence)
 
-    fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult)
+        fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult)
 
-    fun onAuthenticationFailed()
+        fun onAuthenticationFailed()
 }

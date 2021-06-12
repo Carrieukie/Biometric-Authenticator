@@ -1,3 +1,4 @@
+
 package com.example.biometric
 
 import androidx.biometric.BiometricPrompt
@@ -22,12 +23,13 @@ class BiometricAuthenticator(activity: MainActivity, biometricCallback: Biometri
     private var executor: Executor = ContextCompat.getMainExecutor(activity)
 
     //Implement AuthenticationCallback
-    private val biometricPrompt = BiometricPrompt(activity, executor, object : BiometricPrompt.AuthenticationCallback() {
+    private val biometricPrompt =
+        BiometricPrompt(activity, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
 
                 //notify the implementation passed in that a fail occurred
-                biometricCallback.onAuthenticationError(errorCode,errString)
+                biometricCallback.onAuthenticationError(errorCode, errString)
             }
 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -50,5 +52,4 @@ class BiometricAuthenticator(activity: MainActivity, biometricCallback: Biometri
     fun authenticate() {
         biometricPrompt.authenticate(promptInfo)
     }
-
 }
