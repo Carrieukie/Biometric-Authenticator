@@ -14,21 +14,14 @@ import com.example.biometric.biometrics.BiometricAuthenticator
 import com.example.biometric.biometrics.BiometricCallback
 import com.example.biometric.lockscreen.LockScreenAuthenticator
 import com.example.biometric.lockscreen.LockScreenCallback
+import com.example.biometric.utils.AuthenticationWrapper
 
 
 class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback {
 
-
-    private val lockScreenAuthenticator by lazy {
-        LockScreenAuthenticator(this, this).apply {
-            createKey()
-        }
+    private val authenticationWrapper by lazy {
+        AuthenticationWrapper(this, this, this)
     }
-    private val biometricAuthenticator by lazy {
-        BiometricAuthenticator(this, this, lockScreenAuthenticator)
-    }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +32,9 @@ class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback 
 
         //set OnclickListener
         biometricLoginButton.setOnClickListener {
-            biometricAuthenticator.authenticate()
-            showAuthenticationScreen()
+
+            authenticationWrapper.biometricAuthenticator.authenticate()
+
         }
     }
 
@@ -86,7 +80,9 @@ class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback 
         // we will provide a generic one for you if you leave it null
 
         val mKeyguardManager: KeyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+
         val intent: Intent = mKeyguardManager.createConfirmDeviceCredentialIntent(null, null)
+
         startActivityForResult(intent, LockScreenAuthenticator.REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS)
 
     }
@@ -99,7 +95,7 @@ class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback 
 
             // Challenge completed, proceed with using cipher
             if (resultCode == RESULT_OK) {
-                if (lockScreenAuthenticator.tryEncrypt()) {
+                if (authenticationWrapper.lockScreenAuthenticator.tryEncrypt()) {
                     toast("Lock screen authentication succeed")
                 }
             } else {

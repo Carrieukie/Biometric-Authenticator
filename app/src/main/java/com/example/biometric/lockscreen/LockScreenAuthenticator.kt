@@ -35,6 +35,7 @@ class LockScreenAuthenticator(private val activity: AppCompatActivity, private v
         } catch (e: UserNotAuthenticatedException) {
             // User is not authenticated, let's authenticate with device credentials.
             showAuthenticationScreen()
+
             false
         } catch (e: KeyPermanentlyInvalidatedException) {
             // This happens if the lock screen has been disabled or reset after the key was

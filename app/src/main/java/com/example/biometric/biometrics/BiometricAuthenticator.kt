@@ -3,6 +3,7 @@ package com.example.biometric.biometrics
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -17,9 +18,9 @@ import java.util.concurrent.Executor
  * @param biometricCallback is still the activity initializing this class but should implement the BiometricCallback interface
  */
 class BiometricAuthenticator(
-    private val activity: MainActivity,
+    private val activity: AppCompatActivity,
     private val biometricCallback: BiometricCallback,
-    private val lockScreenAuthenticator: LockScreenAuthenticator, ) {
+    private val lockScreenAuthenticator: LockScreenAuthenticator) {
 
     //Initialize a class that manages a system-provided biometric prompt.
     private val promptInfo = BiometricPrompt.PromptInfo.Builder()
@@ -65,6 +66,7 @@ class BiometricAuthenticator(
 
     // Checks the state of the biometrics using biometric manager
     private fun checkBiometricsSupport(){
+
         val biometricManager = BiometricManager.from(activity)
 
 
@@ -83,6 +85,7 @@ class BiometricAuthenticator(
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
 
                 lockScreenAuthenticator.showAuthenticationScreen()
+
                 activity.toast("MY_APP_TAG No biometric features available on this device.")
             }
 
@@ -95,6 +98,7 @@ class BiometricAuthenticator(
             BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
 
                 lockScreenAuthenticator.showAuthenticationScreen()
+
                 activity.toast("Biometric status unknown")
             }
 
@@ -111,10 +115,14 @@ class BiometricAuthenticator(
             }
 
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+
                 // Prompts the user to create credentials that your app accepts.
                 try {
+
                     startFingerprintEnrollment()
+
                 }catch (e : Exception){
+
                     gotoSecuritySettings()
                 }
 
@@ -131,18 +139,17 @@ class BiometricAuthenticator(
     //Opens settings activity for the user to add biometrics android 11 and above
     private fun startFingerprintEnrollment() {
         val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-            putExtra(
-                Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL
-            )
+            putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)
         }
         activity.startActivityForResult(enrollIntent, 123)
     }
 
     //Opens settings activity for the user to add biometrics below android 11
     private fun gotoSecuritySettings() {
+
         val intent = Intent(Settings.ACTION_SECURITY_SETTINGS)
         activity.startActivityForResult(intent, REQUESTCODE_SECURITY_SETTINGS)
+
     }
 
     //companion object
