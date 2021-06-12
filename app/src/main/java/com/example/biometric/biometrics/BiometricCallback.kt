@@ -1,4 +1,4 @@
-package com.example.biometric
+package com.example.biometric.biometrics
 
 import androidx.biometric.BiometricPrompt
 
