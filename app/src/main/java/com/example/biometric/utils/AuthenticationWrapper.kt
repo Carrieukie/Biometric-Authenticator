@@ -14,6 +14,7 @@ class AuthenticationWrapper(activity: AppCompatActivity, biometricCallback: Biom
         }
 
     }
+
     val biometricAuthenticator by lazy {
         BiometricAuthenticator(activity , biometricCallback, lockScreenAuthenticator)
     }

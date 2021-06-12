@@ -20,7 +20,9 @@ import com.example.biometric.utils.AuthenticationWrapper
 class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback {
 
     private val authenticationWrapper by lazy {
+
         AuthenticationWrapper(this, this, this)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +64,9 @@ class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback 
 
     //Authentication was successful
     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+//                    TODO()Login the user
         toast("Success")
+
     }
 
     //Authentication failed
@@ -96,6 +100,7 @@ class MainActivity : AppCompatActivity(), BiometricCallback, LockScreenCallback 
             // Challenge completed, proceed with using cipher
             if (resultCode == RESULT_OK) {
                 if (authenticationWrapper.lockScreenAuthenticator.tryEncrypt()) {
+//                    TODO()Login the user
                     toast("Lock screen authentication succeed")
                 }
             } else {
